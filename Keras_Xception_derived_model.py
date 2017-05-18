@@ -42,8 +42,8 @@ from keras.layers import GlobalMaxPooling2D
 from keras.engine.topology import get_source_inputs
 from keras.utils.data_utils import get_file
 from keras import backend as K
-from keras.applications.amazon_from_space_utils import decode_predictions
-from keras.applications.amazon_from_space_utils import _obtain_input_shape
+from keras.applications.imagenet_utils import decode_predictions
+from keras.applications.imagenet_utils import _obtain_input_shape
 
 
 # Weight of the pre-trained model
@@ -277,11 +277,12 @@ def Xception_derived_model(include_top=False,
 def data_processing(labels_df, x_train, y_train):
   # Function to flatten a list of list
   flatten = lambda l: [item for sublist in l for item in sublist]
-  labels = list(set(flatten([l.split(' ') for l in df_train['tags'].values])))
+  labels = list(set(flatten([l.split(' ') for l in labels_df['tags'].values])))
   label_map = {l: i for i, l in enumerate(labels)}
   #iterate through the samples and create x and y for training
-  for f, tags in tqdm(df_train.values, miniters=1000):
-    img = io.imread('data/train-tif/{}.tif'.format(f))
+  for f, tags in tqdm(labels_df.values, miniters=1000):
+    ###img = io.imread('data/train-tif/{}.tif'.format(f))
+    img = cv2.imread('data/train-tif-v2/{}.tif'.format(f))
     targets = np.zeros(17)
     for t in tags.split(' '):
         targets[label_map[t]] = 1 
@@ -297,42 +298,3 @@ def data_processing(labels_df, x_train, y_train):
   return x_train, y_train
 
 
-# Initiate the model creation.
-if __name__ == '__main__':
-
-    # Open the csv file
-    df_train = pd.read_csv('data/train_short.csv')
-
-    # fix random seed for reproducibility
-    seed = 11
-    np.random.seed(seed)
-    x_train = []
-    y_train = []
-    
-    # Process data
-    x_train, y_train = data_processing(df_train, x_train, y_train)
-
-    # Define how much pictures to use for train and test sets
-    ###split = 35000 # On full dataset
-    split1 = 5
-    ###x_train, x_valid, y_train, y_valid = x_train[:split], x_train[split:], y_train[:split], y_train[split:] # On full dataset
-    x_train, x_valid, y_train, y_valid = x_train[:split1], x_train[split1:], y_train[:split1], y_train[split1:]
-    print(x_train.shape)
-    print(y_train.shape)
-
-    # Model definition
-    model = Xception_derived_model(include_top=False, weights=None)
-    # Compile model
-    model.compile(loss= 'binary_crossentropy' , optimizer= 'adam' , metrics=[ 'accuracy' ])
-    # Fit model
-    model.fit(x_train, y_train,
-          batch_size=1,
-          epochs=1,
-          verbose=0,
-          validation_data=(x_valid, y_valid))
-
-    p_valid = model.predict(x_valid, batch_size=1)
-    print(y_valid)
-    print(p_valid)
-    print(fbeta_score(y_valid, np.array(p_valid) > 0.2, beta=2, average='samples'))
-    
