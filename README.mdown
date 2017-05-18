@@ -1,0 +1,36 @@
+# Planet: Understanding the Amazon from Space
+Deep Neural Network approach to use satellite data to track 
+the human footprint in the Amazon rainforest.
+
+
+### Objective
+The objective is to recognize objects within 17 different classes from
+satellite images in the Amazon basin, using a Deep Neural Network (CNN).
+This is project uses the Keras wraper for Python and Tensorflow libraries, 
+and is based on Xception architecture.
+
+
+### Install
+
+This project requires **Python 2.7** and the following libraries installed:
+
+- [NumPy](http://www.numpy.org/)
+- [Pandas](http://pandas.pydata.org)
+- [Keras](https://keras.io)
+- [scikit-learn](http://scikit-learn.org/stable/)
+- [TensorFlow](https://www.tensorflow.org/)
+
+
+### Code
+
+Code for the project is found in the following scripts:
+- 'Keras_Xception_derived_model.py' train and test the model on the test set
+
+The models can be optimized by using deeper networks, more filters and by
+training them over longuer epoch, which would require large computation power.
+
+
+### Data
+
+You can find more information on this dataset available on the 
+[KAGGLE](https://www.kaggle.com/c/planet-understanding-the-amazon-from-space/data) page.
