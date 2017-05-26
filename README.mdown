@@ -24,9 +24,16 @@ This project requires **Python 2.7** and the following libraries installed:
 ### Code
 
 Code for the project is found in the following scripts:
-- 'starter.py' initiates data processing, model creation and training
+- 'starter_gen.py' initiates data processing, model creation and training
   and saves the results, model structure and weights
 - 'utils' contains utility functions
+- 'Keras_Xception_derived_gen.py' implement data processing and model
+  creation
+
+
+First iteration (without implementation of btach generator)
+- 'starter.py' initiates data processing, model creation and training
+  and saves the results, model structure and weights
 - 'Keras_Xception_derived_model.py' implement data processing and model
   creation
 
