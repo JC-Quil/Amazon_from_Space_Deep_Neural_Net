@@ -43,7 +43,7 @@ def batch_generator(labels_df, set_kind):
     The batches are kept small due to memory limitations of the GPU.
     """
     # Generate training batches
-    if set_kind == "train" and (labels_df.shape[0] == 32384 or labels_df.shape[0] == 3120 or labels_df.shape[0] == 16):
+    if set_kind == "train" and (labels_df.shape[0] == 32384 or labels_df.shape[0] == 3120 or labels_df.shape[0] == 64):
         while 1:
 
             for i in range(labels_df.shape[0]//8):
@@ -87,10 +87,10 @@ def batch_generator(labels_df, set_kind):
     if set_kind == "test" and (labels_df.shape[0] == 8080 or labels_df.shape[0] == 8):
         while 1:
 
-            for i in range(labels_df.shape[0]//4): #REPLACE 1 by 3
+            for i in range(labels_df.shape[0]//8): #REPLACE 1 by 3
                 x_valid = np.load('data/valid-npy/npdatasetX{}.npy'.format(i))
 
-                for j in range(1): #REPLACE 2 by 2816
+                for j in range(2): #REPLACE 2 by 2816
                     x_validj = x_valid[j*4:j*4-1,:]
 
                     yield x_validj
